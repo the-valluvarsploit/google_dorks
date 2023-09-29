@@ -1,0 +1,230 @@
+<html>
+<head>
+    <title>ValluvarSploit's Google Dorks</title>
+    <link rel="stylesheet" type="text/css" href="assets/bootstrap.css">
+    <link href="https://fonts.googleapis.com/css?family=Merienda+One" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <style>
+        body {
+            background-image: url("assets/background.png");
+            color:#FFF;
+            font-size: 14pt;
+            font-family: 'Roboto Mono', monospace;
+            padding: 0px;
+        }
+
+        a {
+            color:#fff;
+            text-decoration:none;
+        }
+
+        a:hover {
+            color:yellow;
+        }
+
+        a.last-clicked {
+            color: green;
+        }
+
+        .center-block {
+            margin: auto;
+            display: block;
+        }
+
+        #split-container {
+            flex: 1;
+            display: flex;
+        }
+
+        #left-pane, #right-pane {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: left;
+        }
+        .mytooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .mytooltip .tooltiptext {
+            visibility: hidden;
+            width: 300px;
+            background-color: #333;
+            color: #fff;
+            text-align: left;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 14px;
+            position: absolute;
+            z-index: 1;
+            top: 100%;
+            left: 100%;
+            margin-left: 10px;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .mytooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        function google_it(type) {
+            const google_url_p1 = 'https://www.google.com/search?q=';
+            const google_url_p2 = '&filter=0&num=100';
+            domain = document.getElementById('domain').value;
+            operator = 'site:';
+            let dork_url;
+
+            if (domain === "") {
+                return;
+            }
+            
+            const dorks = {
+                1: google_url_p1 + operator + domain + '+intitle:index.of' + google_url_p2,
+                2: google_url_p1 + operator + domain + '+ext:xml+|+ext:conf+|+ext:cnf+|+ext:reg+|+ext:inf+|+ext:rdp+|+ext:cfg+|+ext:txt+|+ext:ora+|+ext:ini' + google_url_p2,
+                3: google_url_p1 + operator + domain + '+ext:sql+|+ext:dbf+|+ext:mdb' + google_url_p2,
+                4: google_url_p1 + operator + domain + '+ext:log' + google_url_p2,
+                5: google_url_p1 + operator + domain + '+ext:bkf+|+ext:bkp+|+ext:bak+|+ext:old+|+ext:backup' + google_url_p2,
+                6: google_url_p1 + operator + domain + '+inurl:login+|+inurl:signin+|+intitle:Login+|+intitle:"sign in"+|+inurl:auth' + google_url_p2,
+                7: google_url_p1 + operator + domain + '+intext:"sql+syntax+near"+|+intext:"syntax+error+has+occurred"+|+intext:"incorrect+syntax+near"+|+intext:"unexpected+end+of+SQL+command"+|+intext:"Warning:+mysql_connect()"+|+intext:"Warning:+mysql_query()"+|+intext:"Warning:+pg_connect()"' + google_url_p2,
+                8: google_url_p1 + operator + domain + '+ext:doc+|+ext:docx+|+ext:odt+|+ext:pdf+|+ext:rtf+|+ext:sxw+|+ext:psw+|+ext:ppt+|+ext:pptx+|+ext:pps+|+ext:csv' + google_url_p2,
+                9: google_url_p1 + operator + domain + '+ext:php+intitle:phpinfo+"published+by+the+PHP+Group"' + google_url_p2,
+               10: google_url_p1 + operator + domain + '+inurl:wp-+|+inurl:wp-content+|+inurl:plugins+|+inurl:uploads+|+inurl:themes+|+inurl:download' + google_url_p2,
+               11: google_url_p1 + operator + domain + '+inurl:shell+|+inurl:backdoor+|+inurl:wso+|+inurl:cmd+|+inurl:shadow+|+inurl:passwd+|+inurl:boot.ini+|+inurl:backdoor' + google_url_p2,
+               12: google_url_p1 + operator + domain + '+inurl:readme+|+inurl:license+|+inurl:install+|+inurl:setup+|+inurl:config' + google_url_p2,
+               13: google_url_p1 + operator + domain + '+inurl:redir+|+inurl:url+|+inurl:redirect+|+inurl:return+|+inurl:src=http+|+inurl:r=http+|+inurl:Lmage_url=+|+inurl:Open=+|+inurl:callback=+|+inurl:cgi-bin/redirect.cgi+|+inurl:cgi-bin/redirect.cgi?+|+inurl:checkout=+|+inurl:checkout_url=+|+inurl:continue=+|+inurl:data=+|+inurl:dest=+|+inurl:destination=+|+inurl:dir=+|+inurl:domain=+|+inurl:feed=+|+inurl:file=+|+inurl:file_name=+|+inurl:file_url=' + google_url_p2,
+               14: google_url_p1 + operator + domain + '+ext:action+|+ext:struts+|+ext:do' + google_url_p2,
+               15: google_url_p1 + '+site:pastebin.com+|+site:paste2.org+|+site:pastehtml.com+|+site:slexy.org+|+site:textsnip.com+|+site:bitpaste.app+|+site:justpaste.it+|+site:heypasteit.com+|+site:hastebin.com+|+site:dpaste.org+|+site:dpaste.com+|+site:dotnetfiddle.net+|+site:phpfiddle.org+|+site:paste.debian.net+|+site:paste.org+|+site:paste.org.ru ' + '"' + domain + '"' + google_url_p2,
+               16: google_url_p1 + '+site:linkedin.com+employees+' + domain + google_url_p2,
+               17: google_url_p1 + operator + domain + '+inurl:"/phpinfo.php"+|+inurl:".htaccess"+|+inurl:"/.git"+' + '-github' + google_url_p2,
+               18: google_url_p1 + '+site:*.' + domain + ' ' + '-site:www.' + domain + google_url_p2,
+               19: google_url_p1 + '+site:*.*.' + domain + ' ' + '-site:www.' + domain + google_url_p2,
+               20: google_url_p1 + operator + domain + '+inurl:wp-content+|+inurl:wp-includes' + google_url_p2,
+               21: 'https://' + domain + '/crossdomain.xml',
+               22: google_url_p1 + '+inurl:' + domain + '+ext:swf' + google_url_p2,
+               23: google_url_p1 + operator + domain + '+inurl:signup+|+inurl:register+|+intitle:Signup+|+inurl:account+|+intitle:"My account"+|+intitle:"My dashboard"+|+intitle:dashboard' + google_url_p2,
+               24: google_url_p1 + '+site:github.com+|+site:gitlab.com+|+site:bitbucket.org+|+site:codeberg.org ' + '"' + domain + '"' + google_url_p2,
+               25: google_url_p1 + '+site:stackoverflow.com ' + '"' + domain + '"' + google_url_p2,
+               26: google_url_p1 + '+api_secret+|+api_key+|+apiKey+|+apiSecret ' + '"' + domain + '"' + google_url_p2,
+               27: google_url_p1 + '+upload+|+contact+|+feedback+|+join+|+profile+|+user+|+comment+|+api+|+developer+|+affiliate+|+careers+|+upload+|+mobile+|+upgrade+|+passwordreset ' + '"' + domain + '"' + google_url_p2,
+               28: google_url_p1 + '+site:scribd.com+|+site:npmjs.com+|+site:npm.runkit.com+|+site:libraries.io+|+site:coggle.it+|+site:papaly.com+|+site:prezi.com+|+site:jsdelivr.net+|+site:gitter.im+|+site:comeet.com ' + '"' + domain + '"' + google_url_p2,
+               29: google_url_p1 + '+site:atlassian.net+|+site:trello.com ' + '"' + domain + '"' + google_url_p2,
+               30: google_url_p1 + '+site:ideone.com+|+site:codebeautify.org+|+site:codeshare.io+|+site:codepen.io+|+site:repl.it+|+site:jsfiddle.net+|+site:ide.geeksforgeeks.org+|+site:jsitor.com+|+site:snipt.net+|+site:snipplr.com+|+site:codepad.co ' + '"' + domain + '"' + google_url_p2,
+               31: google_url_p1 + '+site:s3.amazonaws.com+|+site:storage.googleapis.com+|+site:blob.core.windows.net+|+site:drive.google.com ' + '"' + domain + '"' + google_url_p2,
+               32: google_url_p1 + operator + domain + '+inurl:Dashboard.jspa+intext:"Atlassian+Jira+Project+Management+Software"' + google_url_p2,
+               33: google_url_p1 + operator + domain + '+inurl:dashboard+|+intitle:Dashboard' + google_url_p2,
+               34: google_url_p1 + operator + domain + '+inurl:jenkins+|+intitle:"Dashboard [Jenkins]"' + google_url_p2,
+               35: google_url_p1 + '+intitle:traefik+inurl:8080/dashboard ' + '"' + domain + '"' + google_url_p2,
+               36: google_url_p1 + 'cache:' + domain,
+               37: google_url_p1 + operator + domain + '+inurl:app/kibana+intext:"Loading+Kibana"' + google_url_p2,
+               38: google_url_p1 + operator + domain + '+inurl:folder=+|+inurl:folder_url=+|+inurl:forward=+|+inurl:from_url=+|+inurl:go=+|+inurl:goto=+|+inurl:host=+|+inurl:html=+|+inurl:image_url=+|+inurl:img_url=+|+inurl:load_file=+|+inurl:load_url=+|+inurl:login?to=+|+inurl:login_url=+|+inurl:logout=+|+inurl:navigation=|+inurl:next=+|+inurl:next_page=+|+inurl:out=+|+inurl:page=+|+inurl:page_url=+|+inurl:path=+|+inurl:port=+|+inurl:redir=+|+inurl:redirect=+|+inurl:redirect_to=+|+inurl:redirect_uri=+|+inurl:redirect_url=+|+inurl:reference=+|+inurl:return=' + google_url_p2,
+               39: google_url_p1 + operator + domain + '+inurl:returnTo=+|+inurl:return_path=+|+inurl:return_to=+|+inurl:return_url=+|+inurl:rt=+|+inurl:rurl=+|+inurl:show=+|+inurl:site=+|+inurl:target=+|+inurl:to=+|+inurl:uri=+|+inurl:url=+|+inurl:val=+|+inurl:validate=+|+inurl:view=+|+inurl:window=' + google_url_p2,
+               40: google_url_p1 + '+site:core.windows.net+|+site:azureedge.net+|+site:azure-api.net+|+site:azurewebsites.net+|+site:cloudfunctions.net+|+site:appspot.com+|+site:herokuapp.com+|+site:elasticbeanstalk.com+|+site:amazonaws.com+|+site:googleapis.com ' + '"' + domain + '"' + google_url_p2,
+               41: google_url_p1 + operator + domain + ' ' + '+ext:asp+|+ext:do+|+ext:cfm+|+ext:jsp+|+ext:php' + google_url_p2
+            };
+
+            if (dorks[type]) {
+                // https://www.google.com/search?q={operator}{domain}{dork}
+                dork_url = dorks[type];
+                window.open(dork_url)
+            } else {
+                console.error('Invalid type:', type);
+            }
+        }
+
+        function changeLinkColor(link) {
+            var lastClickedLink = document.querySelector(".last-clicked");
+
+            if (lastClickedLink) {
+            lastClickedLink.classList.remove("last-clicked");
+            }
+
+            link.classList.add("last-clicked");
+        }
+    </script>
+    
+    <div style="text-align: center;font-size: 25pt; text-shadow: 0 0 6px #ff7300, 0 0 5px #ff7300, 0 0 5px #ff7300;color: #FFF">
+        Google Dorks<br>
+    </div><br/>
+
+    <form>
+        <input type="text" id="domain" class="form-control form-control-lg w-50 text-center center-block" placeholder='bugcrowd.com' autofocus="" />
+    </form>
+    
+    <div id="split-container">
+        <div id="left-pane" style="text-align: left">
+            <div style="display: inline-block; text-align: left;">
+                &#128301; 
+                <a href="#" onclick="google_it(1); changeLinkColor(this);" class="mytooltip">
+                    Directory listing
+                    <span class="tooltiptext"><h6>Directory Listing</h6><br>Check if directory listing is enabled.</span>
+                </a><br/>  
+                &#128301; <a href="#" onclick="google_it(2); changeLinkColor(this);">Exposed Configuration files</a><br/>
+                &#128301; <a href="#" onclick="google_it(3); changeLinkColor(this);">Exposed Database files</a><br/> 	
+                &#128301; <a href="#" onclick="google_it(4); changeLinkColor(this);">Exposed log files</a><br/> 
+                &#128301; <a href="#" onclick="google_it(5); changeLinkColor(this);">Backup and old files</a><br/>
+                &#128301; <a href="#" onclick="google_it(6); changeLinkColor(this);">Login pages</a><br/>
+                &#128301; <a href="#" onclick="google_it(7); changeLinkColor(this);">SQL errors</a><br/>
+                &#128301; <a href="#" onclick="google_it(8); changeLinkColor(this);">Publicly exposed documents</a><br/>
+                &#128301; <a href="#" onclick="google_it(9); changeLinkColor(this);">phpinfo()</a><br/>
+                &#128301; <a href="#" onclick="google_it(10); changeLinkColor(this);">Find WordPress</a><br/>
+                &#128301; <a href="#" onclick="google_it(11); changeLinkColor(this);">Find Backdoors</a><br/>
+                &#128301; <a href="#" onclick="google_it(12); changeLinkColor(this);">Install / Setup files</a><br/>
+                &#128301; <a href="#" onclick="google_it(13); changeLinkColor(this);">Open Redirect Vulnerability - P1</a><br/>
+                &#128301; <a href="#" onclick="google_it(14); changeLinkColor(this);">Apache STRUTS RCE</a><br/>
+                &#128301; <a href="#" onclick="google_it(15); changeLinkColor(this);">Search Pastebin like sites</a><br/>
+                &#128301; <a href="#" onclick="google_it(16); changeLinkColor(this);">Employees on LINKEDIN</a><br/>
+                &#128301; <a href="#" onclick="google_it(17); changeLinkColor(this);">.htaccess/phpinfo/.git</a><br/>
+                &#128301; <a href="#" onclick="google_it(18); changeLinkColor(this);">Find Subdomains</a><br/>
+                &#128301; 
+                <a href="#" onclick="google_it(19); changeLinkColor(this);" class="mytooltip">
+                    Find 3rd level subdomains
+                    <span class="tooltiptext"><h6>Third Level Subdomains</h6></span>
+                </a><br/> 
+                &#128301; <a href="#" onclick="google_it(20); changeLinkColor(this);">Find WordPress #2</a><br/>
+                &#128301; <a href="#" onclick="google_it(21); changeLinkColor(this);">Test CrossDomain</a><br/>
+            </div>
+        </div>
+
+        <div id="right-pane" style="text-align: left">
+            <div style="display: inline-block; text-align: left;">
+                &#128301; <a href="#" onclick="google_it(22); changeLinkColor(this);">Find .SWF file</a><br/>
+                &#128301; <a href="#" onclick="google_it(23); changeLinkColor(this);">Signup Pages</a><br/>
+                &#128301; <a href="#" onclick="google_it(24); changeLinkColor(this);">Search in Code Repositories</a><br/>
+                &#128301; <a href="#" onclick="google_it(25); changeLinkColor(this);">Search in Stackoverflow</a><br/>
+                &#128301; <a href="#" onclick="google_it(26); changeLinkColor(this);">Search for API secrets</a><br/>
+                &#128301; <a href="#" onclick="google_it(27); changeLinkColor(this);">Others</a><br/>
+                &#128301; <a href="#" onclick="google_it(28); changeLinkColor(this);">Third party products</a><br/>
+                &#128301; <a href="#" onclick="google_it(29); changeLinkColor(this);">Project Management sites</a><br/>
+                &#128301; <a href="#" onclick="google_it(30); changeLinkColor(this);">Code Share sites</a><br/>
+                &#128301; 
+                <a href="#" onclick="google_it(31); changeLinkColor(this);" class="mytooltip">
+                    Cloud Storage buckets
+                    <span class="tooltiptext"><h6>Cloud Storage Buckets</h6><br>Find cloud storage buckets and look for sensitive info in it.<br>Target:<br>"@target.com"<br>Keywords:<br>confidential<br>privileged<br>not for public release<br>for internal use only</span>
+                </a><br/> 
+                &#128301; <a href="#" onclick="google_it(32); changeLinkColor(this);">Jira Instance</a><br/>
+                &#128301; <a href="#" onclick="google_it(33); changeLinkColor(this);">Dashboards</a><br/>
+                &#128301; <a href="#" onclick="google_it(34); changeLinkColor(this);">Jenkins Instance</a><br/>
+                &#128301; <a href="#" onclick="google_it(35); changeLinkColor(this);">Traefik Instance</a><br/>
+                &#128301; <a href="#" onclick="google_it(36); changeLinkColor(this);">Cached Copy</a><br/>
+                &#128301; <a href="#" onclick="google_it(37); changeLinkColor(this);">Kibana Instance</a><br/>
+                &#128301; <a href="#" onclick="google_it(38); changeLinkColor(this);">Open Redirect Vulnerability - P2</a><br/>
+                &#128301; <a href="#" onclick="google_it(39); changeLinkColor(this);">Open Redirect Vulnerability - P3</a><br/>
+                &#128301; 
+                <a href="#" onclick="google_it(40); changeLinkColor(this);" class="mytooltip">
+                    Cloud Apps
+                    <span class="tooltiptext"><h6>Cloud Apps</h6><br>Find cloud apps.<br>Target:<br>"@target.com"<br></span>
+                </a><br/> 
+                &#128301; <a href="#" onclick="google_it(41); changeLinkColor(this);">Interesting Tech Stack</a><br/>
+        </div>
+    </div>
+</body>
+</html>
